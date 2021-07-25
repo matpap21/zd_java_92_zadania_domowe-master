@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -50,87 +51,106 @@ public class Main {
         //uzyskaj listę programistów, którzy są mężczyznami
         //Mając listę programistów i korzystając ze streamów:
         //a. uzyskaj listę programistów, którzy są mężczyznami
-        List<Programmer> mezczyzniProgramisci = programmers
+        List<Programmer> listamezczyzn = programmers
                 .stream()
                 .filter(programmer -> programmer.getPerson().isMale())
                 .collect(Collectors.toList());
-        System.out.println("mezczyzniProgramisci: " + mezczyzniProgramisci);
+
+        System.out.println("uzyskaj listę programistów, którzy są mężczyznami " + listamezczyzn);
 
         //b. uzyskaj listę niepełnoletnich programistów (obydwóch płci), którzy piszą w Cobolu
-        List<Programmer> niepełnoletniCobolowcy = programmers.stream()
+        System.out.println("uzyskaj listę niepełnoletnich programistów (obydwóch płci), którzy piszą w Cobolu");
+        List<Programmer> niepełnoletni_programiści = programmers
+                .stream()
                 .filter(programmer -> programmer.getPerson().getAge() < 18)
                 .filter(programmer -> programmer.getLanguages().contains("Cobol"))
                 .collect(Collectors.toList());
-        System.out.println("niepełnoletniCobolowcy: " + niepełnoletniCobolowcy);
+
+        System.out.println(niepełnoletni_programiści);
 
         //c. uzyskaj listę programistów, którzy znają więcej, niż jeden język programowania
-        List<Programmer> kumaciProgramisci = programmers.stream()
-                .filter(programmer -> programmer.getLanguages().size() > 1)
+        System.out.println("uzyskaj listę programistów, którzy znają więcej, niż jeden język programowania");
+        List<Programmer> Proprogramiści = programmers
+                .stream()
+                .filter(programmer -> programmer.getLanguages().size() >1)
+                //.filter(programmer -> programmer.getPerson().getName() // bez tego
                 .collect(Collectors.toList());
-        System.out.println("kumaciProgramisci: " + kumaciProgramisci);
+
+        System.out.println(Proprogramiści);
 
         //d. uzyskaj listę programistek, które piszą w Javie i Cpp
-        List<Programmer> kumateProgramistki = programmers.stream()
-                .filter(programmer -> !programmer.getPerson().isMale())
-//                .filter(programmer -> programmer.getLanguages().contains("Java"))
-//                .filter(programmer -> programmer.getLanguages().contains("Cpp"))
+        System.out.println("uzyskaj listę programistek, które piszą w Javie i Cpp");
+        List<Programmer> programistki = programmers
+                .stream()
+                .filter(programmer -> programmer.getPerson().isMale() == false)
+                //.filter(programmer -> programmer.getLanguages().contains("Java"))
+                //.filter(programmer -> programmer.getLanguages().contains("Cpp"))
                 .filter(programmer -> programmer.getLanguages().containsAll(Arrays.asList("Java", "Cpp")))
                 .collect(Collectors.toList());
-        System.out.println("kumateProgramistki: " + kumateProgramistki);
+
+        System.out.println(programistki);
 
         //e. uzyskaj listę męskich imion
-        List<String> meskieImiona = programmers.stream()
-                .filter(programmer -> programmer.getPerson().isMale())
-                .map(programmer -> programmer.getPerson().getName())
-                .collect(Collectors.toList());
-        System.out.println("meskieImiona: " + meskieImiona);
+        System.out.println("uzyskaj listę męskich imion: ");
+            List<String> lista_meskich_imion = programmers
+                    .stream()
+                    .filter(programmer -> programmer.getPerson().isMale() == true)
+                    .map((Programmer programmer) -> programmer.getPerson().getName())
+                    .collect(Collectors.toList());
+
+        System.out.println(lista_meskich_imion);
 
         //f. uzyskaj set wszystkich języków opanowanych przez programistów
-        Set<String> ogarnieteJezyki = programmers.stream()
-//                .map(programmer -> programmer.getLanguages())                 // List<List<String>> // zamiast tego:
-                .flatMap(programmer -> programmer.getLanguages().stream())      // List<String>
-                .collect(Collectors.toSet());
-        System.out.println("ogarnieteJezyki: " + ogarnieteJezyki);
+        Set<String> wszystkie_jezyki = programmers
+                .stream()
+                .flatMap(programmer -> programmer.getLanguages().stream()) // List<List<String>> // zamiast tego:
+                .collect(Collectors.toSet());                              // List<String>
+
+        System.out.println(wszystkie_jezyki);
 
         //g. uzyskaj listę nazwisk programistów, którzy znają więcej, niż dwa języki
-        List<String> kumaciProgramisciNazwiska = programmers.stream()
-                .filter(programmer -> programmer.getLanguages().size() > 2)
-                .map(programmer -> programmer.getPerson().getSurname())
-                .collect(Collectors.toList());
-        System.out.println("kumaciProgramisciNazwiska: " + kumaciProgramisciNazwiska);
+        System.out.println("uzyskaj listę nazwisk programistów, którzy znają więcej, niż dwa języki: ");
+            List<String> lnpkzwn2j = programmers
+                    .stream()
+                    .filter(programmer -> programmer.getLanguages().size() >2)
+                    .map(programmer -> programmer.getPerson().getSurname())
+                    .collect(Collectors.toList());
+
+        System.out.println(lnpkzwn2j);
 
         //h. * sprawdź, czy istnieje chociaż jedna osoba, która nie zna żadnego języka
-        boolean czyIstniejeNieogarnietaOsoba = programmers.stream()
-//                .filter(programmer -> programmer.getLanguages().isEmpty())
-//                .map(programmer -> programmer.getPerson())
-//                .findFirst().isPresent();
+        System.out.println("sprawdź, czy istnieje chociaż jedna osoba, która nie zna żadnego języka");
+        boolean  onzj = programmers
+                .stream()
+                //.filter(programmer -> programmer.getLanguages().size() <1)
+                //.map(programmer -> programmer.getPerson().getSurname())
+                //.collect(Collectors.toList());
                 .anyMatch(programmer -> programmer.getLanguages().isEmpty());
-        System.out.println("czyIstniejeNieogarnietaOsoba: " + czyIstniejeNieogarnietaOsoba);
+
+        System.out.println(onzj);
 
         //i. * uzyskaj ilość wszystkich języków opanowanych przez programistki
-        long jezykiProgramistek = programmers.stream()
-                .filter(programmer -> !programmer.getPerson().isMale())
+        System.out.println("uzyskaj ilość wszystkich języków opanowanych przez programistki: ");
+          //  List<Programmer> iwjopp = programmers
+          //          .stream()
+          //          .filter(programmer -> programmer.getPerson().isMale() == false)
+          //          .filter(programmer -> programmer.getLanguages().isEmpty() ==false)
+          //          .collect(Collectors.toList());
+
+        long iwjopp = programmers
+                .stream()
+                .filter(programmer -> programmer.getPerson().isMale() == false)
                 .flatMap(programmer -> programmer.getLanguages().stream())
                 .distinct()
-//                .collect(Collectors.toList());
                 .count();
-        System.out.println("jezykiProgramistek: " + jezykiProgramistek);
+
+        System.out.println(iwjopp);
+
 
         //j. **Używając streamów znajdź długość najdłuższej linii w wybranym przez ciebie pliku.
         // ja jako wybrany plik wybieram ten który aktualnie implementuje:
         String plik = "src/main/java/com/sda/z92/zad_dom_25_7/StreamyZadania2.java";
 
-        try(BufferedReader reader = new BufferedReader(new FileReader(plik))){
-            Optional<String> najdluzszaLinia = reader.lines()
-                    .max(Comparator.comparing(String::length));
-            if(najdluzszaLinia.isPresent()){
-                System.out.println(najdluzszaLinia.get());
-            }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
-}
