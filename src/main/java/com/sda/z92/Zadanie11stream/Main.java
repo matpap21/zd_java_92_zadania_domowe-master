@@ -27,17 +27,17 @@ List<Person> people = new ArrayList<>(Arrays.asList(person1,person2, person3,per
                 .collect(Collectors.toList());
         System.out.println("tylkomezczyzni: " + tylkomezczyzni);
 
-
         // b.uzyskaj listę dorosłych kobiet(filter)
         System.out.println("uzyskaj listę dorosłych kobiet: ");
         List<Person> tylkokobiety = people
                 .stream()
                 .filter(kobiety -> kobiety.isMale() == false)
-                .filter(kobiety -> kobiety.getAge()>18)
+                .filter(kobiety -> kobiety.getAge()>=18)
                 .collect(Collectors.toList());
         System.out.println("tylkokobietydorosle: " + tylkokobiety);
 
 
+        // c.uzyskaj Optional<Person> z dorosłym Jackiemfind
         System.out.println("optional_dorosly_Jacek z opcją FIRST: ");
         Optional<Person> optional_dorosly_Jacek_first = people.stream()
 //                .parallel() // równolegle
@@ -56,12 +56,14 @@ List<Person> people = new ArrayList<>(Arrays.asList(person1,person2, person3,per
         System.out.println(optional_dorosly_Jacek_any);
 
         // d.uzyskaj listę wszystkich nazwisk osób, które są wprzedziale wiekowym:15-19(filter)
-        List<Person> nazwiska_osób_które_są_w_przedziale_wieku_15_do_19 = people
+        List<String> nazwiska_osób_które_są_w_przedziale_wieku_15_do_19 = people
                 .stream()
-                .filter(nazwiska_osób -> nazwiska_osób.getAge()>=15 && nazwiska_osób.getAge()<=19 )
+                .filter(wiek_osob -> wiek_osob.getAge()>=15 && wiek_osob.getAge()<=19 )
+                .map(person -> person.getSurname())
                 .collect(Collectors.toList());
         System.out.println("nazwiska_osób_które_są_w_przedziale_wieku_15_do_19");
         System.out.println(nazwiska_osób_które_są_w_przedziale_wieku_15_do_19.toString());
+
 
         //e.* uzyskaj sumę wieku wszystkich osób(sum)
         System.out.println("uzyskaj sumę wieku wszystkich osób(sum)");
