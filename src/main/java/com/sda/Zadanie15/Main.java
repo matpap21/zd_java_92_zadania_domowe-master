@@ -146,11 +146,25 @@ public class Main {
 
         System.out.println(iwjopp);
 
-
         //j. **Używając streamów znajdź długość najdłuższej linii w wybranym przez ciebie pliku.
         // ja jako wybrany plik wybieram ten który aktualnie implementuje:
-        String plik = "src/main/java/com/sda/z92/zad_dom_25_7/StreamyZadania2.java";
+
+        String plik = "src/main/java/com/sda/Zadanie15/Main.java";
 
 
+        //C:\Users\Mateusz\Downloads\Kurs Java\zd_java_92_zadania_domowe-master\src\main\java\com\sda\Zadanie15\Main.java
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(plik))){
+            Optional<String> najdluzszaLinia = reader.lines()
+                    .max(Comparator.comparing(String::length));
+            if(najdluzszaLinia.isPresent()){
+                System.out.println(najdluzszaLinia.get());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+}
